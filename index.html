@@ -3,7 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#172f50">
+<meta name="theme-color" content="#193657">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="مراجعات الرياضيات">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+<link rel="apple-touch-icon" href="./icons/icon-180.png">
 <title>لعبة مراجعات الرياضيات — الصفوف ٦ إلى ٩</title>
 <style>
 :root{--navy:#193657;--blue:#28547c;--gold:#c38a25;--gold2:#e0b85d;--cream:#fff9ed;--ink:#17263b;--green:#378a54;--red:#b94c3d;--magic1:#6945a5;--magic2:#257ca1;--magic3:#cf68a5;--shadow:0 15px 38px #10233c44}
@@ -286,7 +292,7 @@ function openShare(){const url=gameUrl(),qr='https://api.qrserver.com/v1/create-
 async function copyGameLink(){try{await navigator.clipboard.writeText(gameUrl());toast('تم نسخ رابط اللعبة')}catch{$('shareUrl')?.select();document.execCommand('copy');toast('تم نسخ الرابط')}}
 async function shareNative(){const data={title:'لعبة مراجعات الرياضيات — الصفوف ٦ إلى ٩',text:'جرب لعبة مراجعات الرياضيات واختر الصف من السادس إلى التاسع',url:gameUrl()};if(navigator.share){try{await navigator.share(data)}catch{}}else copyGameLink()}
 function shareWhatsapp(){location.href='https://wa.me/?text='+encodeURIComponent('لعبة مراجعات الرياضيات للصف السابع: '+gameUrl())}
-function openInstall(){openModal('تثبيت اللعبة على الآيفون 📲','<ol class="install-steps"><li>افتح اللعبة في متصفح <b>Safari</b>.</li><li>اضغط زر المشاركة في أسفل المتصفح ⬆️.</li><li>اختر «إضافة إلى الشاشة الرئيسية».</li><li>اضغط «إضافة»؛ ستظهر أيقونة اللعبة على الشاشة الرئيسية.</li></ol>')}
+function openInstall(){openModal('تثبيت اللعبة كتطبيق 📲','<h3>على iPhone أو iPad</h3><ol class="install-steps"><li>افتح رابط اللعبة في Safari.</li><li>اضغط زر المشاركة ⬆️ ثم «إضافة إلى الشاشة الرئيسية».</li><li>اضغط «إضافة»؛ ستظهر اللعبة بأيقونتها وتفتح بملء الشاشة.</li></ol><h3>على Android</h3><ol class="install-steps"><li>افتح اللعبة في Chrome.</li><li>افتح القائمة ⋮ واختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».</li></ol>')}
 function changeZoom(delta){let z=1;try{z=Number(localStorage.getItem('grades-zoom')||1)}catch{};z=Math.max(.8,Math.min(1.25,z+delta));document.body.style.zoom=z;try{localStorage.setItem('grades-zoom',String(z))}catch{};toast(`حجم العرض ${digits(Math.round(z*100))}٪`)}
 function resetGame(){if(confirm('إعادة تحميل اللعبة والبدء من جديد؟'))location.reload()}
 let toastTimer;function toast(t){const el=$('toast');el.textContent=t;el.classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.add('hidden'),1700)}
@@ -297,6 +303,7 @@ const rotatingAyat=[
  {text:'﴿ وَلَوْلَا أَنْ ثَبَّتْنَاكَ لَقَدْ كِدْتَ تَرْكَنُ إِلَيْهِمْ شَيْئًا قَلِيلًا ﴾',ref:'سورة الإسراء — الآية ٧٤'},
  {text:'﴿ اللَّهُ الَّذِي أَنْزَلَ الْكِتَابَ بِالْحَقِّ وَالْمِيزَانَ وَمَا يُدْرِيكَ لَعَلَّ السَّاعَةَ قَرِيبٌ ﴾',ref:'سورة الشورى — الآية ١٧'}
 ];let rotatingAyahIndex=0;function rotateAyah(){if($('home').classList.contains('hidden'))return;const box=$('verseDisplay');box.classList.add('ayah-fade');setTimeout(()=>{rotatingAyahIndex=(rotatingAyahIndex+1)%rotatingAyat.length;$('verseText').textContent=rotatingAyat[rotatingAyahIndex].text;$('verseRef').textContent=rotatingAyat[rotatingAyahIndex].ref;box.classList.remove('ayah-fade')},450)}setInterval(rotateAyah,7000);
+if("serviceWorker" in navigator && location.protocol!=="file:")window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));
 showHome();
 </script>
 </body>
